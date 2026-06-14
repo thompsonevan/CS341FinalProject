@@ -37,7 +37,6 @@ export default function Login() {
     <main className="page narrow-page">
       <section className="card auth-card">
         <h1>Welcome back</h1>
-        <p className="card-copy">Demo account: demo@welltrack.app / demo12345</p>
         <form onSubmit={handleSubmit} noValidate>
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" value={form.email} onChange={handleChange} required />

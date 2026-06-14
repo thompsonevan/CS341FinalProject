@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <p className="status-message">Checking your session...</p>;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <main className="page">
       <section className="hero">

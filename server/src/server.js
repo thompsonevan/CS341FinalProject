@@ -11,10 +11,28 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const clientUrl = (process.env.CLIENT_URL || "http://localhost:5173").replace(/\/+$/, "");
+const isDev = process.env.NODE_ENV !== "production";
 
 app.use(
   cors({
-    origin: clientUrl,
+    origin(origin, callback) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (isDev && /^http:\/\/localhost:\d+$/.test(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      if (origin === clientUrl) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );

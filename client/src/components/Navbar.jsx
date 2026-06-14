@@ -7,17 +7,19 @@ export default function Navbar() {
   return (
     <header className="site-header">
       <nav className="navbar" aria-label="Primary navigation">
-        <Link to="/" className="brand">
+        <Link to={isAuthenticated ? "/dashboard" : "/"} className="brand">
           <img src="/favicon.svg" alt="" width="32" height="32" />
           <span>WellTrack</span>
         </Link>
 
         <ul className="nav-links">
-          <li>
-            <NavLink to="/" end>
-              Home
-            </NavLink>
-          </li>
+          {!isAuthenticated && (
+            <li>
+              <NavLink to="/" end>
+                Home
+              </NavLink>
+            </li>
+          )}
           {isAuthenticated ? (
             <>
               <li>
