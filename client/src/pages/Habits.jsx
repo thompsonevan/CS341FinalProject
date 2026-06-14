@@ -87,39 +87,50 @@ export default function Habits() {
           {message && <p className="success-message">{message}</p>}
           {error && <p className="error-message">{error}</p>}
 
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Habit</th>
-                  <th>Category</th>
-                  <th>Frequency</th>
-                  <th>Completion</th>
-                  <th>Streak</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {visibleHabits.map((habit) => (
-                  <tr key={habit.id}>
-                    <td>
-                      <span className="color-dot" style={{ backgroundColor: habit.color }}></span>
-                      {habit.name}
-                    </td>
-                    <td>{habit.category}</td>
-                    <td>{habit.frequency}</td>
-                    <td>{habit.completionRate}%</td>
-                    <td>{habit.streak}</td>
-                    <td>
-                      <button type="button" className="btn btn-outline" onClick={() => handleDelete(habit.id)}>
-                        Delete
-                      </button>
-                    </td>
+          {visibleHabits.length === 0 ? (
+            <div className="empty-state">
+              <p>{habits.length === 0 ? "No habits yet." : "No habits match this filter."}</p>
+              <p>
+                {habits.length === 0
+                  ? "Use the form on the left to create your first wellness habit."
+                  : "Try a different category or create a new habit."}
+              </p>
+            </div>
+          ) : (
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Habit</th>
+                    <th>Category</th>
+                    <th>Frequency</th>
+                    <th>Completion</th>
+                    <th>Streak</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {visibleHabits.map((habit) => (
+                    <tr key={habit.id}>
+                      <td>
+                        <span className="color-dot" style={{ backgroundColor: habit.color }}></span>
+                        {habit.name}
+                      </td>
+                      <td>{habit.category}</td>
+                      <td>{habit.frequency}</td>
+                      <td>{habit.completionRate}%</td>
+                      <td>{habit.streak}</td>
+                      <td>
+                        <button type="button" className="btn btn-outline" onClick={() => handleDelete(habit.id)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
       </section>
     </main>

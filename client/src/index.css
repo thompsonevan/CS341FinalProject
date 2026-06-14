@@ -354,6 +354,20 @@ th {
   padding: var(--space-4);
 }
 
+.empty-state {
+  text-align: center;
+  padding: var(--space-3);
+  color: var(--text-muted);
+}
+
+.empty-state p {
+  margin: 0 0 var(--space-2);
+}
+
+.empty-state .btn {
+  margin-top: var(--space-1);
+}
+
 .site-footer {
   text-align: center;
   padding: var(--space-3) 0 var(--space-4);

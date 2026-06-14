@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getEntries, getWellnessSummary } from "../api/welltrackApi";
 import { useAuth } from "../context/AuthContext";
 import StreakCanvas from "../components/StreakCanvas";
@@ -61,30 +62,40 @@ export default function Dashboard() {
 
         <article className="card">
           <h3>Recent Entries</h3>
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Habit</th>
-                  <th>Status</th>
-                  <th>Mood</th>
-                  <th>Duration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.slice(0, 8).map((entry) => (
-                  <tr key={entry.id}>
-                    <td>{entry.entryDate}</td>
-                    <td>{entry.habitName}</td>
-                    <td>{entry.completed ? "Completed" : "Missed"}</td>
-                    <td>{entry.mood || "—"}</td>
-                    <td>{entry.durationMinutes ? `${entry.durationMinutes} min` : "—"}</td>
+          {entries.length === 0 ? (
+            <div className="empty-state">
+              <p>No entries yet.</p>
+              <p>Log your first habit check-in to see progress here.</p>
+              <Link className="btn btn-primary" to="/log">
+                Log an entry
+              </Link>
+            </div>
+          ) : (
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Habit</th>
+                    <th>Status</th>
+                    <th>Mood</th>
+                    <th>Duration</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {entries.slice(0, 8).map((entry) => (
+                    <tr key={entry.id}>
+                      <td>{entry.entryDate}</td>
+                      <td>{entry.habitName}</td>
+                      <td>{entry.completed ? "Completed" : "Missed"}</td>
+                      <td>{entry.mood || "—"}</td>
+                      <td>{entry.durationMinutes ? `${entry.durationMinutes} min` : "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </article>
       </section>
     </main>

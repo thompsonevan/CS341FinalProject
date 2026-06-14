@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { createEntry, getEntries, getHabits } from "../api/welltrackApi";
 import { useAuth } from "../context/AuthContext";
 import { MOOD_OPTIONS, sanitizeInput } from "../utils/wellness";
@@ -72,7 +73,17 @@ export default function LogEntry() {
       </section>
 
       <section className="log-layout">
-        <form className="card form-card" onSubmit={handleSubmit} noValidate>
+        {habits.length === 0 ? (
+          <section className="card form-card">
+            <div className="empty-state">
+              <p>You need at least one habit before logging entries.</p>
+              <Link className="btn btn-primary" to="/habits">
+                Create a habit
+              </Link>
+            </div>
+          </section>
+        ) : (
+          <form className="card form-card" onSubmit={handleSubmit} noValidate>
           <label htmlFor="habitId">Habit</label>
           <select id="habitId" name="habitId" value={form.habitId} onChange={handleChange} required>
             <option value="">Select a habit</option>
@@ -146,33 +157,41 @@ export default function LogEntry() {
             Save Entry
           </button>
         </form>
+        )}
 
         <section className="card">
           <h3>Entry History</h3>
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Habit</th>
-                  <th>Completed</th>
-                  <th>Mood</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((entry) => (
-                  <tr key={entry.id}>
-                    <td>{entry.entryDate}</td>
-                    <td>{entry.habitName}</td>
-                    <td>{entry.completed ? "Yes" : "No"}</td>
-                    <td>{entry.mood || "—"}</td>
-                    <td>{entry.notes || "—"}</td>
+          {entries.length === 0 ? (
+            <div className="empty-state">
+              <p>No entry history yet.</p>
+              <p>Your logged check-ins will appear here.</p>
+            </div>
+          ) : (
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Habit</th>
+                    <th>Completed</th>
+                    <th>Mood</th>
+                    <th>Notes</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {entries.map((entry) => (
+                    <tr key={entry.id}>
+                      <td>{entry.entryDate}</td>
+                      <td>{entry.habitName}</td>
+                      <td>{entry.completed ? "Yes" : "No"}</td>
+                      <td>{entry.mood || "—"}</td>
+                      <td>{entry.notes || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
       </section>
     </main>
