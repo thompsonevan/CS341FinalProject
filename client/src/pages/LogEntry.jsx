@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createEntry, getEntries, getHabits } from "../api/welltrackApi";
 import { useAuth } from "../context/AuthContext";
-import { MOOD_OPTIONS, sanitizeInput } from "../utils/wellness";
+import { getMoodLabel, MOOD_OPTIONS, sanitizeInput } from "../utils/wellness";
 
 export default function LogEntry() {
   const { token } = useAuth();
@@ -184,7 +184,7 @@ export default function LogEntry() {
                       <td>{entry.entryDate}</td>
                       <td>{entry.habitName}</td>
                       <td>{entry.completed ? "Yes" : "No"}</td>
-                      <td>{entry.mood || "—"}</td>
+                      <td>{getMoodLabel(entry.mood)}</td>
                       <td>{entry.notes || "—"}</td>
                     </tr>
                   ))}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getEntries, getWellnessSummary } from "../api/welltrackApi";
 import { useAuth } from "../context/AuthContext";
 import StreakCanvas from "../components/StreakCanvas";
+import { getMoodLabel } from "../utils/wellness";
 
 export default function Dashboard() {
   const { token } = useAuth();
@@ -88,7 +89,7 @@ export default function Dashboard() {
                       <td>{entry.entryDate}</td>
                       <td>{entry.habitName}</td>
                       <td>{entry.completed ? "Completed" : "Missed"}</td>
-                      <td>{entry.mood || "—"}</td>
+                      <td>{getMoodLabel(entry.mood)}</td>
                       <td>{entry.durationMinutes ? `${entry.durationMinutes} min` : "—"}</td>
                     </tr>
                   ))}

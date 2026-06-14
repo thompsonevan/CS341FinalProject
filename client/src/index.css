@@ -214,10 +214,6 @@ a:focus-visible {
   box-shadow: var(--shadow);
 }
 
-.auth-card form .btn-primary {
-  margin-top: var(--space-3);
-}
-
 .stat-card h2 {
   font-size: 2.4rem;
   margin: 0;
@@ -251,6 +247,11 @@ a:focus-visible {
 .btn-outline:hover,
 .btn-secondary:hover {
   background: var(--surface-muted);
+}
+
+form .btn-primary,
+form button[type="submit"] {
+  margin-top: var(--space-3);
 }
 
 label,
@@ -343,10 +344,12 @@ th {
 .error-list,
 .error-message {
   color: var(--danger);
+  margin-top: var(--space-2);
 }
 
 .success-message {
   color: var(--success);
+  margin-top: var(--space-2);
 }
 
 .status-message {

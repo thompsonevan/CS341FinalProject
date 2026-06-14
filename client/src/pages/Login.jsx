@@ -1,14 +1,22 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/welltrackApi";
 import { useAuth } from "../context/AuthContext";
 import { sanitizeInput, validateEmail } from "../utils/wellness";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated, loading } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+
+  if (loading) {
+    return <p className="status-message">Checking your session...</p>;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;

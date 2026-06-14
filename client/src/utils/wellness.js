@@ -49,3 +49,22 @@ export const MOOD_OPTIONS = [
   { value: "low", label: "Low" },
   { value: "stressed", label: "Stressed" },
 ];
+
+export const HABIT_FREQUENCIES = [
+  { value: "daily", label: "Daily" },
+  { value: "weekly", label: "Weekly" },
+  { value: "custom", label: "Custom" },
+];
+
+export function getCategoryLabel(value) {
+  return HABIT_CATEGORIES.find((category) => category.value === value)?.label || value;
+}
+
+export function getMoodLabel(value) {
+  if (!value) return "—";
+  return MOOD_OPTIONS.find((mood) => mood.value === value)?.label || value;
+}
+
+export function getFrequencyLabel(value) {
+  return HABIT_FREQUENCIES.find((frequency) => frequency.value === value)?.label || value;
+}

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createHabit, deleteHabit, getHabits } from "../api/welltrackApi";
 import { useAuth } from "../context/AuthContext";
 import HabitForm from "../components/HabitForm";
-import { filterHabitsByCategory, HABIT_CATEGORIES, sortHabits } from "../utils/wellness";
+import { filterHabitsByCategory, getCategoryLabel, getFrequencyLabel, HABIT_CATEGORIES, sortHabits } from "../utils/wellness";
 
 export default function Habits() {
   const { token } = useAuth();
@@ -40,9 +40,14 @@ export default function Habits() {
     }
   };
 
-  const handleDelete = async (habitId) => {
+  const handleDelete = async (habit) => {
+    const confirmed = window.confirm(
+      `Delete "${habit.name}"? This will also remove all logged entries for this habit.`
+    );
+    if (!confirmed) return;
+
     try {
-      await deleteHabit(token, habitId);
+      await deleteHabit(token, habit.id);
       setMessage("Habit deleted.");
       await loadHabits();
     } catch (deleteError) {
@@ -116,12 +121,17 @@ export default function Habits() {
                         <span className="color-dot" style={{ backgroundColor: habit.color }}></span>
                         {habit.name}
                       </td>
-                      <td>{habit.category}</td>
-                      <td>{habit.frequency}</td>
+                      <td>{getCategoryLabel(habit.category)}</td>
+                      <td>{getFrequencyLabel(habit.frequency)}</td>
                       <td>{habit.completionRate}%</td>
                       <td>{habit.streak}</td>
                       <td>
-                        <button type="button" className="btn btn-outline" onClick={() => handleDelete(habit.id)}>
+                        <button
+                          type="button"
+                          className="btn btn-outline"
+                          onClick={() => handleDelete(habit)}
+                          aria-label={`Delete ${habit.name}`}
+                        >
                           Delete
                         </button>
                       </td>
