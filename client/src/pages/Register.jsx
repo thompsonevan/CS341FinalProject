@@ -45,7 +45,7 @@ export default function Register() {
         <h1>Create your WellTrack account</h1>
         <form onSubmit={handleSubmit} noValidate>
           <label htmlFor="name">Full Name</label>
-          <input id="name" name="name" value={form.name} onChange={handleChange} required />
+          <input id="name" name="name" type="text" value={form.name} onChange={handleChange} required />
 
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" value={form.email} onChange={handleChange} required />
