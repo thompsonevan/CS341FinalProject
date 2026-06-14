@@ -4,6 +4,14 @@
 
 WellTrack is a full-stack wellness application that helps users build and maintain healthy habits. Users can register, create habits across wellness categories, log daily entries with mood tracking, and review streaks and completion rates on a personalized dashboard.
 
+## Live Links
+
+| Service | URL |
+|---------|-----|
+| Live App | [cs-341-final-project.vercel.app](https://cs-341-final-project.vercel.app/) |
+| API | [welltrack-api-ta8b.onrender.com](https://welltrack-api-ta8b.onrender.com) |
+| GitHub Repo | [github.com/thompsonevan/CS341FinalProject](https://github.com/thompsonevan/CS341FinalProject) |
+
 ## Product Concept
 
 **Problem:** Many people struggle to stay consistent with wellness routines because progress is hard to see and motivation fades without feedback.
@@ -19,15 +27,23 @@ WellTrack is a full-stack wellness application that helps users build and mainta
 | Database | SQLite (`better-sqlite3`) |
 | Auth | JWT + bcrypt password hashing |
 | Testing | Vitest (client), Node test runner + Supertest (server) |
+| Hosting | Vercel (front-end), Render (back-end) |
+| Analytics | Vercel Analytics |
 
 ## Project Structure
 
 ```
 FinalProject/
-├── client/          # React front-end
-├── server/          # Express API + SQLite database
-├── docs/            # API documentation, ERD, deployment notes
-├── screenshots/     # Place app screenshots here before submission
+├── client/              # React front-end (Vercel root)
+│   ├── src/
+│   ├── public/
+│   ├── tests/
+│   └── vercel.json      # SPA routing for React Router
+├── server/              # Express API (Render root)
+│   ├── src/
+│   └── tests/
+├── docs/                # API docs, ERD, deployment guide
+├── screenshots/         # App screenshots for submission
 └── README.md
 ```
 
@@ -38,7 +54,14 @@ FinalProject/
 - Node.js 18+
 - npm
 
-### 1. Install dependencies
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/thompsonevan/CS341FinalProject.git
+cd CS341FinalProject
+```
+
+### 2. Install dependencies
 
 ```bash
 cd server
@@ -48,7 +71,14 @@ cd ../client
 npm install
 ```
 
-### 2. Configure environment variables
+### 3. Configure environment variables
+
+Copy the example files and edit as needed:
+
+```bash
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+```
 
 **Server** (`server/.env`):
 
@@ -66,7 +96,7 @@ NODE_ENV=development
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
-### 3. Seed demo data (optional)
+### 4. Seed demo data (optional)
 
 ```bash
 cd server
@@ -75,7 +105,7 @@ npm run seed
 
 Demo login: `demo@welltrack.app` / `demo12345`
 
-### 4. Run the application
+### 5. Run the application
 
 Terminal 1 (API):
 
@@ -91,7 +121,7 @@ cd client
 npm run dev
 ```
 
-Open `http://localhost:5173`
+Open [http://localhost:5173](http://localhost:5173)
 
 ## Running Tests
 
@@ -105,6 +135,46 @@ cd ../server
 npm test
 ```
 
+## Deployment (Vercel + Render)
+
+### Back-end on Render
+
+1. Create a new **Web Service** connected to this GitHub repo.
+2. Set **Root Directory** to `server`.
+3. Configure:
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+4. Add environment variables:
+
+| Variable | Value |
+|----------|-------|
+| `JWT_SECRET` | Long random secret string |
+| `DATABASE_PATH` | `./data/welltrack.db` |
+| `CLIENT_URL` | `https://cs-341-final-project.vercel.app` |
+| `NODE_ENV` | `production` |
+
+5. Deploy and verify: [welltrack-api-ta8b.onrender.com/api/health](https://welltrack-api-ta8b.onrender.com/api/health)
+
+### Front-end on Vercel
+
+1. Import this GitHub repo into Vercel.
+2. Set **Root Directory** to `client`.
+3. Framework preset: **Vite**
+4. Add environment variable:
+
+| Variable | Value |
+|----------|-------|
+| `VITE_API_BASE_URL` | `https://welltrack-api-ta8b.onrender.com` |
+
+5. Deploy. The included `client/vercel.json` handles React Router SPA routing.
+
+### After both are deployed
+
+1. Set Render's `CLIENT_URL` to `https://cs-341-final-project.vercel.app` (required for CORS).
+2. Redeploy if you change `VITE_API_BASE_URL` — Vite bakes env vars in at build time.
+
+Full walkthrough: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+
 ## Feature Checklist (Rubric Alignment)
 
 - Semantic HTML5 layout with `header`, `nav`, `main`, `section`, `article`, `footer`
@@ -117,32 +187,7 @@ npm test
 - SQLite with `users`, `habits`, and `habit_entries` tables + full CRUD
 - Client/server input sanitization, JWT auth, bcrypt hashing, protected routes
 - `.env` configuration for secrets and API URLs
-
-## Deployment
-
-> **Action required:** Deployment must be completed with your own accounts.
-
-Recommended setup:
-
-1. **Back-end:** Deploy `server/` to [Render](https://render.com) or [Railway](https://railway.app)
-2. **Front-end:** Deploy `client/` to [Vercel](https://vercel.com) or [Netlify](https://netlify.com)
-3. Set production environment variables on both platforms
-4. Update `CLIENT_URL` on the server to match your deployed front-end URL
-5. Update `VITE_API_BASE_URL` on the client to match your deployed API URL
-
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for step-by-step instructions.
-
-### Deployment Links (fill in after deploying)
-
-| Service | URL |
-|---------|-----|
-| Live App | `https://YOUR-FRONTEND-URL` |
-| API | `https://YOUR-API-URL` |
-| GitHub Repo | `https://github.com/YOUR-USERNAME/welltrack` |
-
-## Analytics
-
-Add [Vercel Analytics](https://vercel.com/docs/analytics) or Google Analytics after front-end deployment. See `docs/DEPLOYMENT.md`.
+- Vercel Analytics integrated in `client/src/main.jsx`
 
 ## Documentation Packet
 
@@ -164,4 +209,6 @@ Include:
 
 ## Author Notes
 
-Pitch slides and live presentation are not included in this build per project scope. Screenshots should be captured after running the app locally or from the deployed version.
+Pitch slides and live presentation are prepared separately. Screenshots should be captured from the deployed version after both Vercel and Render are live.
+
+**Render free tier note:** The API may sleep after inactivity. The first request after sleep can take 30–60 seconds to respond.
